@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TAHIR OS • Cinematic</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&amp;family=Space+Grotesk:wght@500;600&amp;display=swap');
+        
+        body {
+            font-family: 'Inter', system_ui, sans-serif;
+        }
+        
+        .font-display {
+            font-family: 'Space Grotesk', 'Inter', sans-serif;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+        }
+
+        .cosmic-bg {
+            background: #05040f;
+        }
+
+        .section-header {
+            font-size: 3.25rem;
+            line-height: 1.0;
+            font-weight: 700;
+            letter-spacing: -0.05em;
+        }
+
+        .glass {
+            background: rgba(10, 8, 24, 0.6);
+            backdrop-filter: blur(24px);
+            border: 1px solid rgba(255,255,255, 0.08);
+        }
+
+        .premium-button {
+            transition: all 0.2s cubic-bezier(0.23, 1.0, 0.32, 1);
+        }
+        
+        .premium-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+        }
+
+        .visual-mode-btn {
+            transition: all 0.2s ease;
+        }
+        
+        .visual-mode-btn.active {
+            background: linear-gradient(to right, #6366f1, #a855f7);
+            color: white;
+            border-color: transparent;
+        }
+
+        .particle-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            mix-blend-mode: screen;
+        }
+
+        .cosmic-text {
+            background: linear-gradient(90deg, #fff 0%, #c0c4ff 50%, #a5b4fc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+</head>
+<body class="bg-[#05040f] text-white overflow-x-hidden">
+    <!-- Navbar -->
+    <nav class="fixed top-0 left-0 right-0 z-50 border-b border-white/10 bg-[#05040f]/90 backdrop-blur-2xl">
+        <div class="max-w-7xl mx-auto px-8">
+            <div class="flex items-center justify-between h-20">
+                <div class="flex items-center gap-x-3">
+                    <div class="w-9 h-9 rounded-2xl bg-gradient-to-br from-indigo-500 via-purple-500 to-fuchsia-500 flex items-center justify-center">
+                        <span class="font-display text-2xl font-bold tracking-tighter">T</span>
+                    </div>
+                    <span class="font-display text-3xl font-semibold tracking-tighter">TAHIR OS</span>
+                </div>
+
+                <div class="flex items-center gap-x-4">
+                    <button onclick="document.getElementById('demo').scrollIntoView({ behavior: 'smooth' })" 
+                            class="px-6 py-2.5 text-sm font-medium rounded-3xl border border-white/20 hover:bg-white/5 transition-all">
+                        Try the Simulator
+                    </button>
+                    <button onclick="activateOS()" 
+                            class="px-7 py-2.5 rounded-3xl bg-white text-[#05040f] font-semibold text-sm flex items-center gap-x-2 premium-button">
+                        <span>Activate Builder OS</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero with Cinematic Particle System -->
+    <section class="relative min-h-[100dvh] flex items-center justify-center pt-20 cosmic-bg overflow-hidden">
+        <canvas id="cinematic-canvas" class="particle-canvas"></canvas>
+        
+        <!-- Overlay content -->
+        <div class="relative z-10 max-w-5xl mx-auto px-8 text-center">
+            <div class="inline-flex items-center gap-x-2 px-5 py-2 rounded-3xl bg-white/5 border border-white/10 mb-8 text-sm">
+                <div class="flex -space-x-1">
+                    <div class="w-2 h-2 bg-indigo-400 rounded-full"></div>
+                    <div class="w-2 h-2 bg-purple-400 rounded-full"></div>
+                    <div class="w-2 h-2 bg-fuchsia-400 rounded-full"></div>
+                </div>
+                <span class="font-medium tracking-[0.5px] text-white/70">SUPER GROK × TAIR AGENTIC OS</span>
+            </div>
+
+            <h1 class="section-header max-w-[18ch] mx-auto leading-none tracking-[-0.06em] mb-6">
+                This is what happens<br>
+                when you give one prompt<br>
+                to the <span class="cosmic-text">Taahir Builder OS</span>
+            </h1>
+            
+            <p class="max-w-md mx-auto text-2xl text-white/60 mb-10 tracking-tight">
+                Architecture. Code. Deployment. Notification.<br>
+                <span class="text-white/40">All from a single message.</span>
+            </p>
+
+            <!-- Visual Mode Controls -->
+            <div class="flex flex-wrap justify-center gap-3 mb-12">
+                <button onclick="switchVisualMode(0)" class="visual-mode-btn active px-6 py-2.5 text-sm rounded-3xl border border-white/20 bg-white/5 flex items-center gap-x-2" id="mode-0">
+                    <i class="fa-solid fa-sun"></i>
+                    <span>Energy Field</span>
+                </button>
+                <button onclick="switchVisualMode(1)" class="visual-mode-btn px-6 py-2.5 text-sm rounded-3xl border border-white/20 bg-white/5 flex items-center gap-x-2" id="mode-1">
+                    <i class="fa-solid fa-dna"></i>
+                    <span>Helix Flow</span>
+                </button>
+                <button onclick="switchVisualMode(2)" class="visual-mode-btn px-6 py-2.5 text-sm rounded-3xl border border-white/20 bg-white/5 flex items-center gap-x-2" id="mode-2">
+                    <i class="fa-solid fa-cloud"></i>
+                    <span>Nebula Wave</span>
+                </button>
+                <button onclick="switchVisualMode(3)" class="visual-mode-btn px-6 py-2.5 text-sm rounded-3xl border border-white/20 bg-white/5 flex items-center gap-x-2" id="mode-3">
+                    <i class="fa-solid fa-circle"></i>
+                    <span>Portal</span>
+                </button>
+            </div>
+
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                <button onclick="document.getElementById('process').scrollIntoView({ behavior: 'smooth' })" 
+                        class="px-10 py-4 rounded-3xl bg-white text-[#05040f] font-semibold text-lg flex items-center justify-center gap-x-3 premium-button">
+                    See the Agentic Flow
+                </button>
+                <button onclick="document.getElementById('demo').scrollIntoView({ behavior: 'smooth' })" 
+                        class="px-10 py-4 rounded-3xl border border-white/30 hover:bg-white/5 font-medium text-lg flex items-center justify-center gap-x-3 transition-all">
+                    Experience One-Prompt Ship
+                </button>
+            </div>
+        </div>
+
+        <div class="absolute bottom-10 text-xs tracking-[2px] text-white/30 flex items-center gap-x-2">
+            <div>SCROLL TO BEGIN</div>
+            <i class="fa-solid fa-arrow-down text-[10px]"></i>
+        </div>
+    </section>
+
+    <!-- The Agentic Flow -->
+    <section id="process" class="max-w-6xl mx-auto px-8 pt-20 pb-16">
+        <div class="text-center mb-12">
+            <div class="text-indigo-400 text-sm font-bold tracking-[2px]">THE OPERATING SYSTEM</div>
+            <h2 class="section-header text-6xl tracking-[-0.05em] mt-2">The Agentic Flow</h2>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4" id="process-steps">
+            <!-- JS populated -->
+        </div>
+    </section>
+
+    <!-- One Prompt Simulator -->
+    <section id="demo" class="max-w-4xl mx-auto px-8 py-16">
+        <div class="glass rounded-3xl border border-white/10 p-10">
+            <div class="max-w-2xl">
+                <div class="text-indigo-400 text-xs font-bold tracking-[1.5px] mb-2">THE DEMONSTRATION</div>
+                <h3 class="font-display text-5xl tracking-tighter">One Prompt.<br>Full Ship.</h3>
+                <p class="mt-4 text-xl text-white/60">Type any goal. Watch the agent execute the entire pipeline with cinematic feedback.</p>
+            </div>
+
+            <div class="mt-8">
+                <textarea id="goal-input" rows="2" class="w-full bg-[#0a0818] border border-white/10 focus:border-indigo-500 rounded-3xl px-7 py-5 text-xl placeholder:text-white/30" 
+                          placeholder="Build a stunning landing page for my new AI tool..."></textarea>
+                
+                <button onclick="runCinematicSimulator()" 
+                        class="mt-4 w-full py-5 rounded-3xl bg-gradient-to-r from-indigo-500 via-purple-500 to-fuchsia-500 text-xl font-semibold flex items-center justify-center gap-x-3 premium-button">
+                    <span>Execute with Builder OS</span>
+                </button>
+            </div>
+
+            <!-- Simulator Log -->
+            <div id="simulator-output" class="hidden mt-8 border-t border-white/10 pt-8">
+                <div id="simulator-log" class="font-mono text-sm bg-black/40 border border-white/10 rounded-3xl p-8 h-80 overflow-y-auto space-y-3 text-white/80">
+                </div>
+                
+                <div id="sim-success" class="hidden mt-6 p-8 rounded-3xl border border-emerald-500/30 bg-emerald-950/40">
+                    <div class="flex gap-x-4">
+                        <i class="fa-solid fa-check-circle text-emerald-400 text-5xl mt-1"></i>
+                        <div>
+                            <div class="text-2xl font-semibold">Mission accomplished.</div>
+                            <p class="text-emerald-300/80 mt-2">The experience has been built, deployed, and your stakeholder has been notified with the live link.</p>
+                            
+                            <div class="mt-6">
+                                <button onclick="copyLiveLink()" class="px-8 py-3.5 bg-white text-[#05040f] rounded-3xl font-semibold flex items-center gap-x-3 premium-button">
+                                    <i class="fa-solid fa-link"></i>
+                                    <span>Copy Live Vercel URL</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="text-center py-16 text-sm text-white/40 border-t border-white/10">
+        Built from a single prompt by the Taahir Builder OS in collaboration with SuperGrok.<br>
+        This is what agentic power looks like.
+    </footer>
+
+    <script>
+        // Advanced Cinematic Particle System
+        let canvas, ctx;
+        let particles = [];
+        let currentMode = 0;
+        let mouseX = 0, mouseY = 0;
+        let time = 0;
+
+        class CinematicParticle {
+            constructor() {
+                this.reset();
+            }
+            
+            reset() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2.5 + 0.8;
+                this.alpha = Math.random() * 0.7 + 0.3;
+                this.speedX = (Math.random() - 0.5) * 1.2;
+                this.speedY = (Math.random() - 0.5) * 1.2;
+                this.hue = Math.random() * 60 + 240; // Blue-Purple range
+            }
+            
+            update() {
+                const centerX = canvas.width / 2;
+                const centerY = canvas.height / 2;
+                
+                if (currentMode === 0) { // Energy Field
+                    const dx = centerX - this.x;
+                    const dy = centerY - this.y;
+                    const dist = Math.sqrt(dx*dx + dy*dy) || 1;
+                    this.x += (dx / dist) * 0.8 + (Math.random()-0.5)*0.5;
+                    this.y += (dy / dist) * 0.8 + (Math.random()-0.5)*0.5;
+                } 
+                else if (currentMode === 1) { // Helix
+                    this.x += Math.sin(this.y / 30) * 1.8 + this.speedX * 0.6;
+                    this.y += 1.2 + Math.cos(this.x / 40) * 0.4;
+                } 
+                else if (currentMode === 2) { // Nebula
+                    this.x += this.speedX * 0.7;
+                    this.y += this.speedY * 0.7 + Math.sin(time / 40 + this.x / 80) * 0.6;
+                } 
+                else if (currentMode === 3) { // Portal
+                    const dx = centerX - this.x;
+                    const dy = centerY - this.y;
+                    const dist = Math.sqrt(dx*dx + dy*dy) || 1;
+                    this.x += dx / dist * 2.5;
+                    this.y += dy / dist * 2.5;
+                    if (dist < 25) this.reset();
+                }
+                
+                // Mouse interaction
+                const mdx = mouseX - this.x;
+                const mdy = mouseY - this.y;
+                const mdist = Math.sqrt(mdx*mdx + mdy*mdy);
+                if (mdist < 160 && mdist > 0) {
+                    this.x -= mdx / mdist * 1.5;
+                    this.y -= mdy / mdist * 1.5;
+                }
+                
+                // Boundary handling
+                if (this.x < 0 || this.x > canvas.width || this.y < 0 || this.y > canvas.height) {
+                    if (currentMode === 3) this.reset();
+                    else {
+                        this.x = Math.random() * canvas.width;
+                        this.y = Math.random() * canvas.height;
+                    }
+                }
+                
+                this.alpha = 0.4 + Math.sin(time / 15 + this.x) * 0.35;
+            }
+            
+            draw() {
+                ctx.save();
+                ctx.globalAlpha = this.alpha;
+                ctx.fillStyle = `hsla(${this.hue}, 90%, 75%, 1)`;
+                ctx.shadowBlur = currentMode === 3 ? 18 : 10;
+                ctx.shadowColor = `hsla(${this.hue}, 90%, 65%, 0.8)`;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.restore();
+            }
+        }
+
+        function initCinematicCanvas() {
+            canvas = document.getElementById('cinematic-canvas');
+            ctx = canvas.getContext('2d', { alpha: true });
+            
+            function resize() {
+                canvas.width = canvas.offsetWidth;
+                canvas.height = canvas.offsetHeight;
+            }
+            resize();
+            window.addEventListener('resize', resize);
+            
+            // Create particles
+            particles = [];
+            for (let i = 0; i < 220; i++) {
+                particles.push(new CinematicParticle());
+            }
+            
+            // Mouse tracking
+            canvas.addEventListener('mousemove', (e) => {
+                const rect = canvas.getBoundingClientRect();
+                mouseX = e.clientX - rect.left;
+                mouseY = e.clientY - rect.top;
+            });
+            
+            animateCinematic();
+        }
+        
+        function animateCinematic() {
+            if (!ctx || !canvas) return;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            time += 1;
+            
+            // Draw connections for certain modes
+            if (currentMode === 0 || currentMode === 2) {
+                ctx.strokeStyle = 'rgba(99, 102, 241, 0.08)';
+                ctx.lineWidth = 1;
+                for (let i = 0; i < particles.length; i++) {
+                    for (let j = i + 1; j < particles.length; j++) {
+                        const dx = particles[i].x - particles[j].x;
+                        const dy = particles[i].y - particles[j].y;
+                        if (dx * dx + dy * dy < 11000) {
+                            ctx.beginPath();
+                            ctx.moveTo(particles[i].x, particles[i].y);
+                            ctx.lineTo(particles[j].x, particles[j].y);
+                            ctx.stroke();
+                        }
+                    }
+                }
+            }
+            
+            for (let p of particles) {
+                p.update();
+                p.draw();
+            }
+            
+            requestAnimationFrame(animateCinematic);
+        }
+        
+        function switchVisualMode(mode) {
+            currentMode = mode;
+            
+            // Update active button styles
+            document.querySelectorAll('.visual-mode-btn').forEach((btn, i) => {
+                btn.classList.toggle('active', i === mode);
+            });
+            
+            // Gentle particle reset for new mode
+            setTimeout(() => {
+                particles.forEach(p => {
+                    if (Math.random() > 0.6) p.reset();
+                });
+            }, 120);
+        }
+
+        // Process Steps
+        const steps = [
+            { label: "DESIGN", icon: "fa-palette", title: "Design", desc: "Translate the goal into clear architecture, UX, and visual direction with full intent." },
+            { label: "ARCHITECT", icon: "fa-sitemap", title: "Architect", desc: "Design the technical system, stack, data flow, and scalable foundation before any code." },
+            { label: "BUILD", icon: "fa-hammer", title: "Build", desc: "Execute with precision. Production-grade code, interactions, and polished animations." },
+            { label: "SHIP", icon: "fa-rocket", title: "Ship", desc: "Version control, deploy to Vercel, and make it live with zero manual steps." },
+            { label: "MEASURE", icon: "fa-chart-line", title: "Measure", desc: "Track real usage and performance. Data drives the next iteration." },
+            { label: "ITERATE", icon: "fa-sync", title: "Iterate", desc: "Rapid improvement based on real feedback. Always moving forward." }
+        ];
+
+        function renderProcessSteps() {
+            const container = document.getElementById('process-steps');
+            container.innerHTML = '';
+            
+            steps.forEach((step, index) => {
+                const div = document.createElement('div');
+                div.className = `glass border border-white/10 rounded-3xl p-6 cursor-pointer hover:border-indigo-500/40 transition-all`;
+                div.innerHTML = `
+                    <div class="flex items-center gap-x-4 mb-4">
+                        <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center flex-shrink-0">
+                            <i class="fa-solid ${step.icon} text-2xl"></i>
+                        </div>
+                        <div>
+                            <div class="font-semibold text-xl tracking-tight">${step.label}</div>
+                            <div class="text-xs text-white/40 tracking-widest">PHASE 0${index + 1}</div>
+                        </div>
+                    </div>
+                    <div class="text-white/70 text-[15px] leading-snug">${step.desc}</div>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        // Cinematic Simulator
+        let simRunning = false;
+
+        function runCinematicSimulator() {
+            if (simRunning) return;
+            simRunning = true;
+            
+            const output = document.getElementById('simulator-output');
+            const log = document.getElementById('simulator-log');
+            const success = document.getElementById('sim-success');
+            
+            output.classList.remove('hidden');
+            success.classList.add('hidden');
+            log.innerHTML = '';
+            
+            const goal = document.getElementById('goal-input').value.trim() || "Create a stunning cinematic experience that demonstrates the Taahir Builder OS";
+            
+            const messages = [
+                `Goal received: "${goal.substring(0, 70)}${goal.length > 70 ? '...' : ''}"` ,
+                "Activating Taahir Builder OS protocols...",
+                "Designing cinematic particle system & visual architecture...",
+                "Scaffolding premium Tailwind + advanced Canvas layers...",
+                "Implementing interactive visual modes (Energy → Helix → Nebula → Portal)...",
+                "Building One-Prompt Simulator with real-time feedback...",
+                "Creating GitHub repository...",
+                "Pushing production files...",
+                "Deploying to Vercel...",
+                "Extracting live production URL...",
+                "Sending email to stakeholder with live link..."
+            ];
+            
+            let i = 0;
+            
+            function addMessage(msg) {
+                const el = document.createElement('div');
+                el.className = 'flex gap-x-3 text-sm';
+                el.innerHTML = `<span class="text-indigo-400/70 w-6 font-mono flex-shrink-0">[${String(i+1).padStart(2,'0')}]</span> <span>${msg}</span>`;
+                log.appendChild(el);
+                log.scrollTop = log.scrollHeight;
+            }
+            
+            function next() {
+                if (i >= messages.length) {
+                    setTimeout(() => {
+                        success.classList.remove('hidden');
+                        simRunning = false;
+                        
+                        // Trigger visual celebration
+                        currentMode = 3;
+                        document.querySelectorAll('.visual-mode-btn').forEach((b, idx) => b.classList.toggle('active', idx === 3));
+                    }, 400);
+                    return;
+                }
+                
+                setTimeout(() => {
+                    addMessage(messages[i]);
+                    i++;
+                    next();
+                }, 680 + Math.random() * 420);
+            }
+            
+            next();
+        }
+        
+        function copyLiveLink() {
+            const url = "https://taahir-os-cinematic.vercel.app"; // Will be updated after real deploy
+            navigator.clipboard.writeText(url).then(() => {
+                const btns = document.querySelectorAll('#sim-success button');
+                if (btns[0]) {
+                    const original = btns[0].innerHTML;
+                    btns[0].innerHTML = `<i class="fa-solid fa-check"></i> <span>COPIED!</span>`;
+                    setTimeout(() => {
+                        btns[0].innerHTML = original;
+                    }, 1800);
+                }
+            });
+        }
+
+        function activateOS() {
+            const btn = event.currentTarget;
+            // Simple activation feedback
+            const originalText = event.target.innerHTML;
+            event.target.innerHTML = `<i class="fa-solid fa-check mr-2"></i> OS ACTIVATED`;
+            event.target.style.background = 'linear-gradient(to right, #10b981, #34d399)';
+            
+            setTimeout(() => {
+                event.target.innerHTML = originalText;
+                event.target.style.background = '';
+                document.getElementById('demo').scrollIntoView({ behavior: 'smooth' });
+                
+                const input = document.getElementById('goal-input');
+                if (input) input.value = "Build a visually stunning cinematic showcase that demonstrates the full power of the Taahir Builder OS";
+            }, 1400);
+        }
+
+        function initialize() {
+            initCinematicCanvas();
+            renderProcessSteps();
+            
+            // Default to Energy Field mode
+            setTimeout(() => {
+                const firstBtn = document.getElementById('mode-0');
+                if (firstBtn) firstBtn.classList.add('active');
+            }, 300);
+            
+            // Keyboard shortcut for simulator
+            document.getElementById('goal-input').addEventListener('keydown', (e) => {
+                if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) {
+                    e.preventDefault();
+                    runCinematicSimulator();
+                }
+            });
+            
+            console.log('%c[Taahir OS] Cinematic showcase initialized with advanced particle modes.', 'color:#64748b');
+        }
+        
+        window.onload = initialize;
+    </script>
+</body>
+</html>
