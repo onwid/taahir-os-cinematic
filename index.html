@@ -70,6 +70,60 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
+
+        /* === 3D CSS TRANSFORMS === */
+        .tilt-card {
+            transition: transform 0.45s cubic-bezier(0.23, 1.0, 0.32, 1), 
+                        box-shadow 0.45s cubic-bezier(0.23, 1.0, 0.32, 1);
+            transform-style: preserve-3d;
+            perspective: 1200px;
+        }
+        
+        .tilt-card:hover {
+            transform: perspective(1000px) rotateX(7deg) rotateY(11deg) translateZ(18px);
+            box-shadow: 0 40px 70px -15px rgb(0 0 0 / 0.4),
+                        0 0 0 1px rgba(99, 102, 241, 0.25);
+        }
+
+        .process-card {
+            transition: transform 0.5s cubic-bezier(0.23, 1.0, 0.32, 1), 
+                        box-shadow 0.5s cubic-bezier(0.23, 1.0, 0.32, 1);
+            transform-style: preserve-3d;
+        }
+        
+        .process-card:hover {
+            transform: perspective(900px) rotateX(5deg) rotateY(9deg) translateZ(22px);
+            box-shadow: 0 45px 80px -20px rgb(0 0 0 / 0.45);
+        }
+
+        .simulator-container {
+            transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+            transform-style: preserve-3d;
+        }
+        
+        .simulator-container:hover {
+            transform: perspective(850px) rotateX(4deg) rotateY(7deg) translateZ(12px);
+        }
+
+        .three-d-text {
+            transition: transform 0.7s cubic-bezier(0.23, 1, 0.32, 1);
+            transform-style: preserve-3d;
+            display: inline-block;
+        }
+        
+        .three-d-text:hover {
+            transform: perspective(700px) rotateX(14deg) rotateY(-10deg) translateZ(45px);
+        }
+
+        .mode-btn-3d {
+            transition: transform 0.3s cubic-bezier(0.23, 1, 0.32, 1), 
+                        box-shadow 0.3s ease;
+            transform-style: preserve-3d;
+        }
+        
+        .mode-btn-3d:hover {
+            transform: perspective(600px) rotateX(8deg) rotateY(12deg) translateZ(8px);
+        }
     </style>
 </head>
 <body class="bg-[#05040f] text-white overflow-x-hidden">
@@ -124,21 +178,28 @@
                 <span class="text-white/40">All from a single message.</span>
             </p>
 
+            <!-- 3D Animated Text -->
+            <div class="mb-8">
+                <span class="three-d-text text-2xl md:text-3xl font-display tracking-[-0.03em] text-white/90 px-6 py-2 border border-white/10 rounded-3xl inline-block">
+                    taahir agentic OS <span class="text-indigo-400">×</span> supergrok
+                </span>
+            </div>
+
             <!-- Visual Mode Controls -->
             <div class="flex flex-wrap justify-center gap-3 mb-12">
-                <button onclick="switchVisualMode(0)" class="visual-mode-btn active px-6 py-2.5 text-sm rounded-3xl border border-white/20 bg-white/5 flex items-center gap-x-2" id="mode-0">
+                <button onclick="switchVisualMode(0)" class="visual-mode-btn mode-btn-3d active px-6 py-2.5 text-sm rounded-3xl border border-white/20 bg-white/5 flex items-center gap-x-2" id="mode-0">
                     <i class="fa-solid fa-sun"></i>
                     <span>Energy Field</span>
                 </button>
-                <button onclick="switchVisualMode(1)" class="visual-mode-btn px-6 py-2.5 text-sm rounded-3xl border border-white/20 bg-white/5 flex items-center gap-x-2" id="mode-1">
+                <button onclick="switchVisualMode(1)" class="visual-mode-btn mode-btn-3d px-6 py-2.5 text-sm rounded-3xl border border-white/20 bg-white/5 flex items-center gap-x-2" id="mode-1">
                     <i class="fa-solid fa-dna"></i>
                     <span>Helix Flow</span>
                 </button>
-                <button onclick="switchVisualMode(2)" class="visual-mode-btn px-6 py-2.5 text-sm rounded-3xl border border-white/20 bg-white/5 flex items-center gap-x-2" id="mode-2">
+                <button onclick="switchVisualMode(2)" class="visual-mode-btn mode-btn-3d px-6 py-2.5 text-sm rounded-3xl border border-white/20 bg-white/5 flex items-center gap-x-2" id="mode-2">
                     <i class="fa-solid fa-cloud"></i>
                     <span>Nebula Wave</span>
                 </button>
-                <button onclick="switchVisualMode(3)" class="visual-mode-btn px-6 py-2.5 text-sm rounded-3xl border border-white/20 bg-white/5 flex items-center gap-x-2" id="mode-3">
+                <button onclick="switchVisualMode(3)" class="visual-mode-btn mode-btn-3d px-6 py-2.5 text-sm rounded-3xl border border-white/20 bg-white/5 flex items-center gap-x-2" id="mode-3">
                     <i class="fa-solid fa-circle"></i>
                     <span>Portal</span>
                 </button>
@@ -176,7 +237,7 @@
 
     <!-- One Prompt Simulator -->
     <section id="demo" class="max-w-4xl mx-auto px-8 py-16">
-        <div class="glass rounded-3xl border border-white/10 p-10">
+        <div class="glass simulator-container rounded-3xl border border-white/10 p-10">
             <div class="max-w-2xl">
                 <div class="text-indigo-400 text-xs font-bold tracking-[1.5px] mb-2">THE DEMONSTRATION</div>
                 <h3 class="font-display text-5xl tracking-tighter">One Prompt.<br>Full Ship.</h3>
@@ -398,7 +459,7 @@
             
             steps.forEach((step, index) => {
                 const div = document.createElement('div');
-                div.className = `glass border border-white/10 rounded-3xl p-6 cursor-pointer hover:border-indigo-500/40 transition-all`;
+                div.className = `process-card tilt-card glass border border-white/10 rounded-3xl p-6 cursor-pointer hover:border-indigo-500/40 transition-all`;
                 div.innerHTML = `
                     <div class="flex items-center gap-x-4 mb-4">
                         <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center flex-shrink-0">
@@ -528,7 +589,7 @@
                 }
             });
             
-            console.log('%c[Taahir OS] Cinematic showcase initialized with advanced particle modes.', 'color:#64748b');
+            console.log('%c[Taahir OS] Cinematic showcase initialized with advanced particle modes and 3D transforms.', 'color:#64748b');
         }
         
         window.onload = initialize;
